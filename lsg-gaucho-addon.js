@@ -55,6 +55,8 @@ function init(){
   parent.appendChild(b);b.addEventListener('click',openConfig);
  }
  gear(cover,'lsgCoverGear',false);gear(game,'lsgGameGear',true);
+ const updateGear=()=>{const g=$('lsgGameGear');if(!g)return;const shown=cover.getClientRects().length&&getComputedStyle(cover).display!=='none'&&!cover.classList.contains('hidden');g.style.setProperty('display',shown?'none':'grid','important');};
+ const gearObserver=new MutationObserver(updateGear);gearObserver.observe(cover,{attributes:true,attributeFilter:['class','style']});updateGear();
  $('lsgConfigDone').addEventListener('click',closeConfig);
  config.addEventListener('pointerdown',e=>{if(e.target===config)closeConfig()});
  for(const [input,field,out] of [['lsgMusicRange','lsgMusicLevel','lsgMusicPct'],['lsgFxRange','lsgEffectsLevel','lsgFxPct']]){
