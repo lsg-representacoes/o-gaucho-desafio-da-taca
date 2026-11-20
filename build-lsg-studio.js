@@ -2,6 +2,7 @@
 'use strict';
 const fs=require('fs'),path=require('path');
 const root=__dirname,web=path.join(root,'www');
+const generateIcons=require('./generate-gaucho-icons.js');
 function once(source,oldText,newText,label){
  const n=source.split(oldText).length-1;
  if(n!==1)throw Error('Unsafe patch '+label+' — expected 1, got '+n);
@@ -65,17 +66,17 @@ for(const kind of ['tacas','limite']){
  const prefix=kind==='tacas'?'':'/no-limite';
  const h='<meta name="application-name" content="O Gaúcho '+(kind==='tacas'?'Desafio das Taças':'No Limite')+'">'+
  '<link rel="manifest" href="'+prefix+'/manifest.webmanifest">'+
- '<link rel="icon" href="'+prefix+'/app-icon.png" type="image/png" sizes="256x256">'+
- '<link rel="apple-touch-icon" href="'+prefix+'/app-icon.png">';
+ '<link rel="icon" href="'+prefix+'/icon-192.png" type="image/png" sizes="192x192">'+
+ '<link rel="apple-touch-icon" href="'+prefix+'/apple-touch-icon.png">';
  s=once(s,'</head>',h+'</head>','Game head '+kind);
  s=once(s,'<html lang="pt-BR"','<html data-lsg-game="'+kind+'" lang="pt-BR"','Game ID '+kind);
  s=once(s,'</body>','<script src="/assets/lsg-gaucho-addon.js"></script></body>','Addon loader '+kind);
  fs.writeFileSync(file,s);
- fs.copyFileSync(path.join(root,'assets/app-icon.png'),path.join(dir,'app-icon.png'));
+ generateIcons(path.join(root,'assets/app-icon.png'),dir,kind);
  const manifest={name:kind==='tacas'?'O Gaúcho — Desafio das Taças':'O Gaúcho — No Limite',
  short_name:kind==='tacas'?'Gaúcho Taças':'Gaúcho Limite',start_url:prefix+'/',scope:prefix+'/',
  display:'standalone',background_color:'#291018',theme_color:'#7d0e1c',
- icons:[{src:'app-icon.png',sizes:'256x256',type:'image/png',purpose:'any'}]};
+ icons:[{src:'icon-192.png',sizes:'192x192',type:'image/png',purpose:'any'},{src:'icon-512.png',sizes:'512x512',type:'image/png',purpose:'any'}]};
  fs.writeFileSync(path.join(dir,'manifest.webmanifest'),JSON.stringify(manifest));
  console.log('LSG Game Studio ready '+kind+' bytes '+Buffer.byteLength(s));
 }
