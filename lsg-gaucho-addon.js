@@ -67,6 +67,8 @@ function init(){
    if(typeof window.lsgApplyAudio==='function')window.lsgApplyAudio();
   });
  }
+ // O Desafio das Taças já possui tutorial animado nativo; não adicionar vídeo duplicado.
+ if(id==='tacas')return;
  const videoWrap=document.createElement('div');videoWrap.id='lsgVideo';videoWrap.className='lsgHidden';
  videoWrap.innerHTML='<section class="lsgBox" role="dialog" aria-modal="true"><h2>🎬 VÍDEO-TUTORIAL · 8 SEGUNDOS</h2>'+
  '<canvas id="lsgDemoCanvas" width="640" height="520"></canvas><video id="lsgDemoVideo" class="lsgHidden" muted playsinline preload="none"></video>'+
